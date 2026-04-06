@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  @apply bg-ink bg-glow text-slate-100 antialiased;
+  font-family: "Outfit", sans-serif;
+  margin: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(82, 167, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(82, 167, 255, 0.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+  opacity: 0.3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(82, 167, 255, 0.35);
+  border-radius: 999px;
+}
+
+.glass-panel {
+  @apply border border-line/80 bg-panel/90 shadow-neon backdrop-blur-xl;
+}
+
+.input-base {
+  @apply w-full rounded-2xl border border-[#243448] bg-[#09111d] px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyber focus:ring-2 focus:ring-cyber/20;
+}
+
+.button-base {
+  @apply inline-flex items-center justify-center rounded-2xl border px-4 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

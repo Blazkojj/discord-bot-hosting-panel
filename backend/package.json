@@ -1,0 +1,26 @@
+{
+  "name": "discord-bot-hosting-backend",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "build": "node -e \"console.log('Backend does not need a build step. Run `npm run build` from the repository root to build the frontend.')\"",
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^12.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.2",
+    "node-unrar-js": "^2.0.2",
+    "pm2": "^6.0.8",
+    "socket.io": "^4.8.1",
+    "unzipper": "^0.12.3"
+  }
+}

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.DS_Store
+
+backend/.env
+backend/storage/app.db
+backend/storage/bots/*
+!backend/storage/bots/.gitkeep
+backend/storage/tmp/*
+!backend/storage/tmp/.gitkeep
+
+frontend/.env
+
+backend-start.log
+backend-start.err.log
+icehost-panel.html
