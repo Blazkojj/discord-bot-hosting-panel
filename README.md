@@ -138,6 +138,97 @@ npm run start
 
 Jesli istnieje katalog `frontend/dist`, backend automatycznie serwuje zbudowany frontend.
 
+### Wdrozenie na VPS
+
+Najprostszy model jest taki:
+
+- frontend buduje sie na serwerze do `frontend/dist`
+- backend Express serwuje frontend i API z jednego procesu
+- PM2 uruchamia backend panelu oraz osobno boty Discord
+- Nginx wystawia domenę i reverse proxy na backend
+
+#### 1. Przygotuj serwer
+
+Na Ubuntu / Debian:
+
+```bash
+sudo apt update
+sudo apt install -y curl git nginx
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+sudo npm install -g pm2
+```
+
+#### 2. Wgraj projekt na serwer
+
+```bash
+git clone https://github.com/TWOJ_LOGIN/discord-bot-hosting-panel.git /var/www/discord-hosting
+cd /var/www/discord-hosting
+npm install
+```
+
+#### 3. Ustaw produkcyjny env backendu
+
+```bash
+cp backend/.env.example backend/.env
+nano backend/.env
+```
+
+Przyklad:
+
+```env
+PORT=4000
+FRONTEND_URL=https://panel.twojadomena.pl
+JWT_SECRET=tu_daj_bardzo_mocny_losowy_sekret
+DATABASE_PATH=./storage/app.db
+BOT_STORAGE_PATH=./storage/bots
+BOT_UPLOAD_TMP_PATH=./storage/tmp
+```
+
+#### 4. Zbuduj frontend na serwerze
+
+```bash
+npm run build
+```
+
+#### 5. Uruchom panel przez PM2
+
+W repo jest gotowy plik [ecosystem.config.cjs](./ecosystem.config.cjs):
+
+```bash
+pm2 start ecosystem.config.cjs
+pm2 save
+pm2 startup
+```
+
+#### 6. Podlacz domenę przez Nginx
+
+W repo jest gotowy przyklad [deploy/nginx.discord-hosting.conf](./deploy/nginx.discord-hosting.conf).
+
+Skopiuj go na serwer, podmien `panel.twojadomena.pl`, a potem:
+
+```bash
+sudo cp deploy/nginx.discord-hosting.conf /etc/nginx/sites-available/discord-hosting
+sudo ln -s /etc/nginx/sites-available/discord-hosting /etc/nginx/sites-enabled/discord-hosting
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+#### 7. Dodaj HTTPS
+
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d panel.twojadomena.pl
+```
+
+Po tym:
+
+- strona dziala na domenie
+- backend dziala na serwerze
+- SQLite jest na serwerze
+- upload plikow i logi sa na serwerze
+- boty uruchamiaja sie na serwerze przez PM2
+
 ## Jak dziala hosting botow
 
 Dla kazdego bota tworzony jest osobny katalog:

@@ -6,18 +6,10 @@ function getNpmCommand() {
   return process.platform === "win32" ? "npm.cmd" : "npm";
 }
 
-function getNpmCliPath() {
-  return (
-    process.env.NPM_CLI_JS ||
-    process.env.npm_execpath ||
-    path.join(path.dirname(process.execPath), "node_modules", "npm", "bin", "npm-cli.js")
-  );
-}
-
 function getPm2NpmProcessDefinition() {
   return {
-    script: process.execPath,
-    args: [getNpmCliPath(), "run", "start"],
+    script: getNpmCommand(),
+    args: ["run", "start"],
     interpreter: "none"
   };
 }

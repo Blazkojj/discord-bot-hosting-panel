@@ -19,18 +19,10 @@ function getNpmCommand() {
   return process.platform === "win32" ? "npm.cmd" : "npm";
 }
 
-function getNpmCliPath() {
-  return (
-    process.env.NPM_CLI_JS ||
-    process.env.npm_execpath ||
-    path.join(path.dirname(process.execPath), "node_modules", "npm", "bin", "npm-cli.js")
-  );
-}
-
 function getNpmSpawnConfig(args) {
   return {
-    command: process.execPath,
-    args: [getNpmCliPath(), ...args]
+    command: getNpmCommand(),
+    args
   };
 }
 
@@ -175,8 +167,8 @@ async function resolvePrestartExecution(bot, rawCommand) {
     }
 
     return {
-      command: process.execPath,
-      args: [getNpmCliPath(), "install"],
+      command: getNpmCommand(),
+      args: ["install"],
       displayCommand: "npm install"
     };
   }
@@ -194,8 +186,8 @@ async function resolvePrestartExecution(bot, rawCommand) {
     }
 
     return {
-      command: process.execPath,
-      args: [getNpmCliPath(), "run", scriptName],
+      command: getNpmCommand(),
+      args: ["run", scriptName],
       displayCommand: `npm run ${scriptName}`
     };
   }
